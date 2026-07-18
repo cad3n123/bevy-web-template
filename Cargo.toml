@@ -19,8 +19,5 @@ incremental = true
 [profile.dev.package."*"]
 opt-level = 3
 
-[build]
-rustc-wrapper = "sccache"
-
 [lints.clippy]
 needless_pass_by_value = "allow"
