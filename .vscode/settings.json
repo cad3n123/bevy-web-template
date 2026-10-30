@@ -1,4 +1,7 @@
 {
+  // Keep rust-analyzer's clippy runs in target/rust-analyzer so they don't
+  // invalidate the artifacts `cargo run` depends on (and vice versa).
+  "rust-analyzer.cargo.targetDir": true,
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.check.extraArgs": [
     "--",

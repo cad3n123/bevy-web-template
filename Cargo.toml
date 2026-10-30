@@ -3,8 +3,16 @@ name = "bevy-web-template"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+# Native-only dev loop: `cargo run --features dev` links bevy as a shared
+# library, which cuts the link step of an incremental rebuild dramatically.
+# Never enable for wasm or for release builds.
+dev = ["bevy/dynamic_linking"]
+
 [dependencies]
-bevy = "0.19"
+# This is a 2D web template: the `3d` and `audio` default features pull in
+# bevy_pbr, bevy_gltf, bevy_anti_alias, ktx2/zstd and rodio for nothing.
+bevy = { version = "0.19", default-features = false, features = ["2d", "ui"] }
 
 [profile.release]
 opt-level = 3
@@ -15,9 +23,14 @@ debug = false
 [profile.dev]
 opt-level = 1
 incremental = true
+# Debuginfo is the single biggest cost of the link step. `line-tables-only`
+# keeps panic backtraces usable; set to 0 if you never need them.
+debug = "line-tables-only"
+split-debuginfo = "unpacked"
 
 [profile.dev.package."*"]
 opt-level = 3
+debug = false
 
 [lints.clippy]
 needless_pass_by_value = "allow"
